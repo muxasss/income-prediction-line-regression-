@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Startup Predictor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #0a0a0a;
+    --card: rgba(255, 255, 255, 0.04);
+    --glass: rgba(255, 255, 255, 0.06);
+    --accent: #7c5cff;
+    --accent2: #00d4ff;
+    --text: #eaeaea;
+    --muted: #888;
+    --border: rgba(255,255,255,0.08);
+    --radius: 14px;
+    --transition: 0.35s ease;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #111 0%, #050505 60%);
+    color: var(--text);
+}
+
+/* HEADER */
+header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    backdrop-filter: blur(14px);
+    background: rgba(10,10,10,0.6);
+    border-bottom: 1px solid var(--border);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+header span {
+    font-weight: 600;
+    background: linear-gradient(45deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.content {
+    max-width: 1100px;
+    margin: 120px auto;
+    padding: 0 20px;
+}
+
+.info-section {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.info-section h1 {
+    font-size: 3rem;
+    font-weight: 500;
+}
+
+.info-section span {
+    background: linear-gradient(45deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.info-section p {
+    color: var(--muted);
+    max-width: 600px;
+    margin: auto;
+}
+
+/* CARDS */
+.lr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.lr-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 30px;
+    border-radius: var(--radius);
+    backdrop-filter: blur(12px);
+    transition: var(--transition);
+}
+
+.lr-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+}
+
+/* FORM */
+.predict-section {
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+
+.inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.input-group label {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    color: white;
+}
+
+input:focus {
+    border-color: var(--accent);
+}
+
+/* BUTTON */
+#main-btn {
+    margin-top: 30px;
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* RESULT */
+#result-box {
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: var(--radius);
+    background: var(--glass);
+    text-align: center;
+}
+
+#profit-val {
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+/* TABLE */
+.table-container {
+    margin-top: 40px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: rgba(255,255,255,0.05);
+}
+
+tr:hover td {
+    background: rgba(124,92,255,0.08);
+}
+</style>
+</head>
+
+<body>
+
+
+
+<div class="content">
+
+
+
+<div class="predict-section">
+    <div class="inputs-grid">
+        <div class="input-group">
+            <label>Возраст</label>
+            <input type="number" id="age">
+        </div>
+        <div class="input-group">
+            <label>Опыт (лет)</label>
+            <input type="number" id="experience">
+        </div>
+    </div>
+
+    <button id="main-btn" onclick="handlePredict()">Рассчитать</button>
+
+    <div id="result-box">
+        <p>Прогнозируемый доход</p>
+        <h2 id="profit-val">0 KGS</h2>
+    </div>
+</div>
+<h2 style="margin-top:80px;">Dataset</h2>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+    <th>Age</th>
+    <th>Experience</th>
+    <th>Income</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>25</td><td>1</td><td>30450</td></tr>
+<tr><td>30</td><td>3</td><td>35670</td></tr>
+<tr><td>47</td><td>2</td><td>31580</td></tr>
+<tr><td>32</td><td>5</td><td>40130</td></tr>
+<tr><td>43</td><td>10</td><td>47830</td></tr>
+<tr><td>51</td><td>7</td><td>41630</td></tr>
+<tr><td>28</td><td>5</td><td>41340</td></tr>
+<tr><td>33</td><td>4</td><td>37650</td></tr>
+<tr><td>37</td><td>5</td><td>40250</td></tr>
+<tr><td>39</td><td>8</td><td>45150</td></tr>
+<tr><td>29</td><td>1</td><td>27840</td></tr>
+<tr><td>47</td><td>9</td><td>46110</td></tr>
+<tr><td>54</td><td>5</td><td>36720</td></tr>
+<tr><td>51</td><td>4</td><td>34800</td></tr>
+<tr><td>44</td><td>12</td><td>51300</td></tr>
+<tr><td>41</td><td>6</td><td>38900</td></tr>
+<tr><td>58</td><td>17</td><td>63600</td></tr>
+<tr><td>23</td><td>1</td><td>30870</td></tr>
+<tr><td>44</td><td>9</td><td>44190</td></tr>
+<tr><td>37</td><td>10</td><td>48700</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<!-- GRAPH SECTION -->
+<h2 style="margin-top:80px;">График зависимости дохода</h2>
+
+<div style="margin-top:30px; text-align:center;">
+    <!-- ЗАМЕНИ ПУТЬ НА СВОЙ -->
+    <img src="{{ url_for('static', filename='images/grafic-ai.png') }}" 
+     alt="Income Graph"
+     style="max-width:100%; border-radius:14px; border:1px solid var(--border);">
+</div>
+</div>
+
+<script>
+async function handlePredict() {
+    const age = document.getElementById('age').value;
+    const experience = document.getElementById('experience').value;
+
+    if(!age || !experience){
+        alert("Пожалуйста, введите возраст и опыт!");
+        return;
+    }
+
+    const res = await fetch('/predict', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({age, experience})
+    });
+
+    const data = await res.json();
+
+    document.getElementById('result-box').style.display = 'block';
+    document.getElementById('profit-val').innerText = data.income + " KGS";
+}
+</script>
+
+</body>
+</html>
